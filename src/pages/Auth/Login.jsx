@@ -31,7 +31,7 @@ const Login = () => {
         dispatch(
           loginSuccess({
             user: res.user,
-            token: res.access_token,
+            token: res.token,
           })
         );
         toast.success("Đăng nhập thành công!");

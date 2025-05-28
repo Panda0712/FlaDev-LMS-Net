@@ -256,7 +256,7 @@ const useCourseTable = ({
             name: lesson.name,
             video_url:
               videoIndex !== -1 && videosList[videoIndex]
-                ? videosList[videoIndex].secure_url
+                ? videosList[videoIndex].url
                 : lesson.video_url || "",
           };
         });
@@ -274,7 +274,7 @@ const useCourseTable = ({
 
       const apiData = {
         ...data,
-        thumbnail: imagesPath ? imagesPath.secure_url : currentImageFormData,
+        thumbnail: imagesPath ? imagesPath.url : currentImageFormData,
         courseModules: validatedModules,
         instructor: currentUser?.username,
       };

@@ -1,32 +1,6 @@
 import { API_ROOT } from "~/utils/constants";
 import api from "./api";
 
-// Admin
-export const getUsersAdmin = async () => {
-  const res = await api.get("/Admin/users");
-  return res.data;
-};
-
-export const updateUserRole = async (id, data) => {
-  const res = await api.put(`/Admin/users/${id}/role`, data);
-  return res.data;
-};
-
-export const getDashboardStatistic = async () => {
-  const res = await api.get("/Admin/dashboard/stats");
-  return res.data;
-};
-
-export const createNewUser = async (data) => {
-  const res = await api.post("/Admin/users/create", data);
-  return res.data;
-};
-
-export const deleteUser = async (id) => {
-  const res = await api.delete(`/Admin/users/${id}`);
-  return res.data;
-};
-
 // Courses
 export const fetchCourses = async () => {
   const res = await api.get("/Course");
@@ -53,71 +27,87 @@ export const deleteCourse = async (id) => {
   return res.data;
 };
 
+// Modules
+export const fetchModules = async () => {
+  const res = await api.get("/Module");
+  return res.data;
+};
+
+export const createModule = async (data) => {
+  const res = await api.post("/Module", data);
+  return res.data;
+};
+
+export const updateModule = async (id, data) => {
+  const res = await api.put(`/Module/${id}`, data);
+  return res.data;
+};
+
+export const deleteModule = async (id) => {
+  const res = await api.delete(`/Module/${id}`);
+  return res.data;
+};
+
 // Reviews
 export const fetchReviews = async () => {
-  const res = await api.get("/Review");
+  const res = await api.get("/reviews");
   return res.data;
 };
 
 export const createReview = async (data) => {
-  const res = await api.post("/Review", data);
-  return res.data;
-};
-
-export const fetchReviewsByCourseId = async (courseId) => {
-  const res = await api.get(`/Review/course/${courseId}`);
+  const res = await api.post("/reviews", data);
   return res.data;
 };
 
 export const updateReview = async (id, data) => {
-  const res = await api.put(`/Review/${id}`, data);
+  const res = await api.put(`/reviews/${id}`, data);
   return res.data;
 };
 
 export const deleteReview = async (id) => {
-  const res = await api.delete(`/Review/${id}`);
+  const res = await api.delete(`/reviews/${id}`);
   return res.data;
 };
 
 // Blogs
 export const fetchBlogs = async () => {
-  const res = await api.get("/Blog");
+  const res = await api.get("/blogs");
   return res.data;
 };
 
 export const fetchBlogById = async (id) => {
-  const res = await api.get(`/Blog/${id}`);
+  const res = await api.get(`/blogs/${id}`);
   return res.data;
 };
 
 export const createBlog = async (data) => {
-  const res = await api.post("/Blog", data);
+  const res = await api.post("/blogs", data);
   return res.data;
 };
 
 export const updateBlog = async (id, data) => {
-  const res = await api.put(`/Blog/${id}`, data);
+  const res = await api.put(`/blogs/${id}`, data);
   return res.data;
 };
 
 export const deleteBlog = async (id) => {
-  const res = await api.delete(`/Blog/${id}`);
+  const res = await api.delete(`/blogs/${id}`);
   return res.data;
 };
 
 // Contacts
 export const fetchContacts = async () => {
-  const res = await api.get("/Contact");
+  const res = await api.get("/contacts");
   return res.data;
 };
 
 export const createContact = async (data) => {
-  const res = await api.post("/Contact", data);
+  const res = await api.post("/contacts", data);
   return res.data;
 };
 
 export const deleteContact = async (id) => {
-  const res = await api.delete(`/Contact/${id}`);
+  const res = await api.delete(`/contacts/${id}`);
   return res.data;
 };
 
@@ -129,11 +119,6 @@ export const fetchOrders = async () => {
 
 export const fetchOrderById = async (id) => {
   const res = await api.get(`/Order/${id}`);
-  return res.data;
-};
-
-export const fetchOrdersAdmin = async () => {
-  const res = await api.get("/Order/admin");
   return res.data;
 };
 
@@ -168,9 +153,9 @@ export const updateVoucher = async (id, data) => {
   return res.data;
 };
 
-export const fetchVoucherByName = async ({ name }) => {
+export const fetchVoucherByName = async ({ code, courseId }) => {
   const res = await api.get("/Voucher/find-by-name", {
-    params: { name },
+    params: { code, courseId },
   });
   return res.data;
 };
@@ -201,115 +186,131 @@ export const deleteCart = async (id) => {
   return res.data;
 };
 
-export const findCartByUserAndCourse = async (courseId) => {
+export const findCartByUserAndCourse = async (userId, courseId) => {
   const res = await api.get(`/Cart/find-by-user-and-course`, {
-    params: { courseId },
+    params: { userId, courseId },
   });
   return res.data;
 };
 
 // Wishlist
 export const fetchWishlist = async () => {
-  const res = await api.get("/Wishlist");
+  const res = await api.get("/wishlist");
   return res.data;
 };
 
 export const addToWishlist = async (data) => {
-  const res = await api.post("/Wishlist", data);
+  const res = await api.post("/wishlist", data);
   return res.data;
 };
 
 export const updateWishlist = async (id, data) => {
-  const res = await api.put(`/Wishlist/${id}`, data);
+  const res = await api.put(`/wishlist/${id}`, data);
   return res.data;
 };
 
 export const deleteWishlist = async (id) => {
-  const res = await api.delete(`/Wishlist/${id}`);
+  const res = await api.delete(`/wishlist/${id}`);
   return res.data;
 };
 
 // Profile/User
 export const fetchUserProfile = async () => {
-  const res = await api.get("/User");
+  const res = await api.get("/users");
   return res.data;
 };
 
 export const updateUserProfile = async (id, data) => {
-  const res = await api.put(`/User/${id}`, data);
+  const res = await api.put(`/users/${id}`, data);
   return res.data;
 };
 
 // Auth
 export const login = async (data) => {
-  const res = await api.post("/Auth/login", data);
+  const res = await api.post("/login", data);
   return res.data;
 };
 
 export const register = async (data) => {
-  const res = await api.post("/Auth/register", data);
-  return res.data;
-};
-
-export const getCurrentAuth = async () => {
-  const res = await api.get("/Auth/current");
+  const res = await api.post("/register", data);
   return res.data;
 };
 
 export const logout = async () => {
-  const res = await api.post("/Auth/logout");
+  const res = await api.post("/logout");
   return res.data;
 };
 
 export const resetPassword = async (data) => {
-  const res = await api.post("/Auth/reset-password-temp", data);
+  const res = await api.post("/password/reset", data);
   return res.data;
 };
 
 // Media
 export const uploadMedia = async (data) => {
-  const res = await api.post("/Media/upload", data);
+  const res = await api.post("/media/upload", data);
   return res.data;
 };
 
 export const uploadUserImage = async (data) => {
-  const res = await api.post("Media/users/uploads", data);
+  const res = await api.post(`${API_ROOT}/v1/users/uploads`, data);
   return res.data;
 };
 
 export const uploadBlogImageAPI = async (data) => {
-  const res = await api.post("Media/blogs/uploads", data);
+  const res = await api.post(`${API_ROOT}/v1/blogs/uploads`, data);
   return res.data;
 };
 
 export const uploadCourseImageAPI = async (data) => {
-  const res = await api.post("Media/courses/uploads", data);
+  const res = await api.post(`${API_ROOT}/v1/courses/uploads`, data);
   return res.data;
 };
 
 export const uploadCourseVideoAPI = async (data) => {
-  const res = await api.post("Media/courses/uploads-videos", data);
+  const res = await api.post(`${API_ROOT}/v1/courses/uploads-videos`, data);
+  return res.data;
+};
+
+// Lessons
+export const fetchLessons = async () => {
+  const res = await api.get("/Lesson");
+  return res.data;
+};
+
+export const createLesson = async (data) => {
+  const res = await api.post("/Lesson", data);
+  return res.data;
+};
+
+export const updateLesson = async (id, data) => {
+  const res = await api.put(`/Lesson/${id}`, data);
+  return res.data;
+};
+
+export const deleteLesson = async (id) => {
+  const res = await api.delete(`/Lesson/${id}`);
   return res.data;
 };
 
 // Progress
-export const fetchCourseProgress = async (courseId) => {
-  const res = await api.get(`/Progress/${courseId}`, { params: { courseId } });
+export const fetchCourseProgress = async (courseId, userId) => {
+  const res = await api.get(`/progress/${courseId}`, { params: { userId } });
   return res.data;
 };
 
-export const fetchAllProgress = async () => {
-  const res = await api.get("/Progress");
+export const fetchAllProgress = async (userId) => {
+  const res = await api.get("/progress", { params: { userId } });
   return res.data;
 };
 
 export const updateLessonProgress = async (data) => {
-  const res = await api.post("/Progress/update-lesson", data);
+  const res = await api.post("/progress/update-lesson", data);
   return res.data;
 };
 
 export const initCourseProgress = async (data) => {
-  const res = await api.post("/Progress/init", data);
+  const res = await api.post("/progress/init", data);
   return res.data;
 };
 

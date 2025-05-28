@@ -66,7 +66,7 @@ const UserProfile = () => {
     const currentImageFormData = getValues("avatar");
     if (imagePath || currentImageFormData) {
       const apiData = {
-        avatar: imagePath ? imagePath.secure_url : currentImageFormData,
+        avatar: imagePath ? imagePath.url : currentImageFormData,
       };
       toast
         .promise(updateUserProfile(currentUser?.id, apiData), {
@@ -112,7 +112,7 @@ const UserProfile = () => {
     const currentImageFormData = getValues("avatar");
     const apiData = {
       ...data,
-      avatar: imagePath ? imagePath.secure_url : currentImageFormData,
+      avatar: imagePath ? imagePath.url : currentImageFormData,
       socialLink: {
         website: data?.website || null,
         facebook: data?.facebook || null,

@@ -170,7 +170,7 @@ const useBlogTable = ({
       const apiData = {
         ...data,
         tags: tagsArray,
-        coverImage: imagesPath ? imagesPath.secure_url : currentImageFormData,
+        coverImage: imagesPath ? imagesPath.url : currentImageFormData,
         author: currentUser.username,
         authorId: currentUser.id,
       };

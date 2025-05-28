@@ -49,7 +49,7 @@ const Register = () => {
         dispatch(
           loginSuccess({
             user: res.user,
-            token: res.access_token,
+            token: res.token,
           })
         );
         toast.success("Đăng ký tài khoản thành công!!!");
