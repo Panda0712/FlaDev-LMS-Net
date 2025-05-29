@@ -74,6 +74,10 @@ const useCourseLearning = ({
       courseModules: updatedModules,
     }));
 
+    // Temporarily disable Progress API calls until backend is fixed
+    console.log("🔍 Video completed - Progress API temporarily disabled");
+    return;
+
     // Tìm lesson ID thực tế từ lesson name
     const currentLesson = findCurrentLesson();
     if (!currentLesson) {
