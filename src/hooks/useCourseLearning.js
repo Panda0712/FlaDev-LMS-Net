@@ -143,7 +143,7 @@ const useCourseLearning = ({
 
   useEffect(() => {
     const currentLesson = findCurrentLesson();
-    if (currentLesson?.video_url) setCurrentVideoUrl(currentLesson.video_url);
+    if (currentLesson?.videoUrl) setCurrentVideoUrl(currentLesson.videoUrl);
     else setCurrentVideoUrl(null);
   }, [currentActiveLesson, courseInfo]);
 

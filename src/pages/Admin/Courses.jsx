@@ -357,7 +357,7 @@ const AdminCourses = () => {
                     type="button"
                     className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-0.5 rounded text-xs"
                     onClick={() => {
-                      addLesson(idx, { name: "", video_url: "" });
+                      addLesson(idx, { name: "", videoUrl: "" });
                     }}
                   >
                     Thêm Lesson
@@ -389,7 +389,7 @@ const AdminCourses = () => {
                       <InputV2
                         key={`video-input-${idx}-${lidx}-${!!currentVideo}`}
                         type="video"
-                        video={currentVideo || lesson?.video_url || null}
+                        video={currentVideo || lesson?.videoUrl || null}
                         handleVideoChange={(event) =>
                           handleVideoChange(event, idx, lidx)
                         }
@@ -432,7 +432,7 @@ const AdminCourses = () => {
               <td className={`${tHeadStyle}`}>
                 <img
                   src={course?.thumbnail}
-                  className="object-cover md:w-[200px] md:h-[150px] sm:w-[150px] sm:h-[100px] 
+                  className="object-cover md:w-[200px] md:h-[150px] sm:w-[150px] sm:h-[100px]
                   w-[120px] h-[80px] mx-auto rounded-sm"
                   alt=""
                 />
