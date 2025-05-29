@@ -1,7 +1,7 @@
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { fetchCourses, fetchReviews } from "~/apis/endpoints";
+import { fetchCourses } from "~/apis/endpoints";
 import CourseCard from "~/components/CourseCard/CourseCard";
 import NavigationText from "~/components/NavigationText/NavigationText";
 import CourseFilter from "~/pages/Courses/CourseFilter/CourseFilter";
@@ -118,10 +118,11 @@ const Courses = () => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([fetchCourses(), fetchReviews()])
-      .then(([coursesRes, reviewsRes]) => {
+    fetchCourses()
+      .then((coursesRes) => {
         setCourses(coursesRes || []);
-        setReviews(reviewsRes || []);
+        // Set empty reviews for now - reviews will be fetched per course when needed
+        setReviews([]);
       })
       .catch((error) => {
         console.log(error);
@@ -150,7 +151,7 @@ const Courses = () => {
               handleChangeSearchValue={handleChangeSearchValue}
             />
             <div
-              className="flex max-md:grid max-md:grid-cols-2 
+              className="flex max-md:grid max-md:grid-cols-2
             max-sm:grid-cols-1 flex-col gap-[32px]"
             >
               {(selectedCategory || selectedReview || searchQuery) &&
@@ -189,7 +190,7 @@ const Courses = () => {
             Khóa học nổi bật
           </h3>
           <div
-            className="relative mt-5 grid lg:grid-cols-4 md:grid-cols-3 
+            className="relative mt-5 grid lg:grid-cols-4 md:grid-cols-3
           min-[500px]:grid-cols-2 max-[500px]:grid-cols-1 gap-[30px]"
           >
             {courses?.slice(0, 4).map((course, index) => (

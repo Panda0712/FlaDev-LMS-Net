@@ -27,8 +27,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className="relative px-8 flex items-center lg:flex-nowrap flex-wrap 
-    lg:h-[72px] h-auto lg:pb-0 pb-8 max-[598px]:pt-4 lg:justify-between justify-center 
+      className="relative px-8 flex items-center lg:flex-nowrap flex-wrap
+    lg:h-[72px] h-auto lg:pb-0 pb-8 max-[598px]:pt-4 lg:justify-between justify-center
     lg:gap-4 gap-8 border-b border-slate-200"
     >
       <div className="flex items-center gap-2">
@@ -61,13 +61,11 @@ const Navbar = () => {
               <ShoppingCart size={24} />
               <div
                 className="rounded-full absolute right-[-12px] top-[-9px]
-              border p-2 w-[18px] h-[18px] bg-amber-100 border-slate-300 
+              border p-2 w-[18px] h-[18px] bg-amber-100 border-slate-300
             flex items-center justify-center"
               >
                 <span className="text-[10px]">
-                  {!!cartRedux.length && isOrderComplete
-                    ? 0
-                    : cartRedux?.length || carts?.length}
+                  {isOrderComplete ? 0 : cartRedux?.length || 0}
                 </span>
               </div>
             </div>

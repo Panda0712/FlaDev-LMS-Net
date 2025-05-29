@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  fetchUserProfile,
+  getCurrentAuth,
   updateUserProfile,
   uploadUserImage,
 } from "~/apis/endpoints";
@@ -178,13 +178,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetchUserProfile()
+    getCurrentAuth()
       .then((res) => {
-        const userProfiles = res || [];
-        const currentUserProfile = userProfiles?.find(
-          (user) => user?.id === currentUser?.id
-        );
-        setUser(currentUserProfile || null);
+        setUser(res || null);
       })
       .catch((error) => {
         console.log(error);

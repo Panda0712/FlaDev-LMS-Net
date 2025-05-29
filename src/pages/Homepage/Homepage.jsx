@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { fetchCourses, fetchReviews } from "~/apis/endpoints";
+import { fetchCourses } from "~/apis/endpoints";
 import Loading from "~/components/Loading/Loading";
 import Banner from "~/pages/Homepage/Banner/Banner";
 import Details from "~/pages/Homepage/Details/Details";
@@ -16,10 +16,11 @@ const Homepage = () => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([fetchReviews(), fetchCourses()])
-      .then(([reviewRes, courseRes]) => {
-        setReviews(reviewRes || []);
+    fetchCourses()
+      .then((courseRes) => {
         setCourses(courseRes || []);
+        // Set empty reviews for now - can be populated later if needed
+        setReviews([]);
       })
       .catch((error) => {
         console.log(error);

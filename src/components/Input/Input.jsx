@@ -1,44 +1,73 @@
+import React from "react";
 import FileInput from "~/components/FileInput/FileInput";
 
-const Input = ({
-  name,
-  content,
-  type = "text",
-  style,
-  image = null,
-  icon = null,
-  handleImageChange = () => {},
-  ...props
-}) => {
-  const { error } = props;
+const Input = React.forwardRef(
+  (
+    {
+      name,
+      content,
+      type = "text",
+      style,
+      image = null,
+      icon = null,
+      handleImageChange = () => {},
+      ...props
+    },
+    ref
+  ) => {
+    const { error } = props;
 
-  const globalStyle =
-    "md:text-[16px] text-[14px] border border-slate-400 rounded-[12px] px-4 py-4 my-2 font-medium";
+    const globalStyle =
+      "md:text-[16px] text-[14px] border border-slate-400 rounded-[12px] px-4 py-4 my-2 font-medium";
 
-  if (type === "file" || type === "file-secondary") {
-    return (
-      <FileInput
-        image={image}
-        handleImageChange={handleImageChange}
-        type={type}
-      />
-    );
-  }
+    if (type === "file" || type === "file-secondary") {
+      return (
+        <FileInput
+          image={image}
+          handleImageChange={handleImageChange}
+          type={type}
+        />
+      );
+    }
 
-  if (type === "textarea") {
+    if (type === "textarea") {
+      return (
+        <>
+          <textarea
+            ref={ref}
+            name={name}
+            placeholder={content}
+            type={type}
+            className={`${globalStyle} h-[110px] ${style}`}
+            {...props}
+          />
+          {error && (
+            <p
+              className="text-red-500 text-left max-w-[300px]
+          md:text-[14px] text-[12px] my-1"
+            >
+              {error.message}
+            </p>
+          )}
+        </>
+      );
+    }
+
     return (
       <>
-        <textarea
+        <input
+          ref={ref}
           name={name}
           placeholder={content}
           type={type}
-          className={`${globalStyle} h-[110px] ${style}`}
+          className={`${globalStyle} h-[50px] ${style}`}
           {...props}
         />
+        {icon && icon}
         {error && (
           <p
-            className="text-red-500 text-left max-w-[300px] 
-          md:text-[14px] text-[12px] my-1"
+            className="text-red-500 text-left max-w-[300px]
+        md:text-[14px] text-[12px] my-1"
           >
             {error.message}
           </p>
@@ -46,27 +75,8 @@ const Input = ({
       </>
     );
   }
+);
 
-  return (
-    <>
-      <input
-        name={name}
-        placeholder={content}
-        type={type}
-        className={`${globalStyle} h-[50px] ${style}`}
-        {...props}
-      />
-      {icon && icon}
-      {error && (
-        <p
-          className="text-red-500 text-left max-w-[300px] 
-        md:text-[14px] text-[12px] my-1"
-        >
-          {error.message}
-        </p>
-      )}
-    </>
-  );
-};
+Input.displayName = "Input";
 
 export default Input;

@@ -2,7 +2,11 @@ import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { fetchCourseById, fetchOrders, fetchReviews } from "~/apis/endpoints";
+import {
+  fetchCourseById,
+  fetchOrders,
+  fetchReviewsByCourseId,
+} from "~/apis/endpoints";
 import NavigationText from "~/components/NavigationText/NavigationText";
 import CourseContent from "~/pages/Courses/Course/CourseContent/CourseContent";
 import CourseHeading from "~/pages/Courses/Course/CourseHeading/CourseHeading";
@@ -35,7 +39,11 @@ const Course = () => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([fetchCourseById(courseId), fetchReviews(), fetchOrders()])
+    Promise.all([
+      fetchCourseById(courseId),
+      fetchReviewsByCourseId(courseId),
+      fetchOrders(),
+    ])
       .then(([courseRes, reviewRes, ordersRes]) => {
         setCourse(courseRes || {});
         setReviews(reviewRes || []);
