@@ -235,13 +235,10 @@ const useCourseTable = ({
         error: "Tải ảnh thất bại!",
       });
 
-    let videosList = [];
+    // Create a map to store uploaded video URLs by their position
+    const uploadedVideosMap = new Map();
+
     if (formVideoData) {
-      // videosList = await toast.promise(uploadCourseVideoAPI(formVideoData), {
-      //   pending: "Đang tải video lên...",
-      //   success: "Tải video thành công!!!",
-      //   error: "Tải video thất bại!",
-      // });
       const videoFiles = formVideoData.getAll("file");
 
       if (videoFiles.length > 0) {
@@ -263,7 +260,13 @@ const useCourseTable = ({
             const uploadResult = await uploadCourseVideoAPI(
               singleVideoFormData
             );
-            videosList.push(uploadResult);
+
+            // Map the uploaded video URL to its corresponding module and lesson
+            const videoOrder = videosOrder[i];
+            if (videoOrder && uploadResult?.url) {
+              const key = `${videoOrder.moduleIdx}-${videoOrder.lessonIdx}`;
+              uploadedVideosMap.set(key, uploadResult.url);
+            }
           }
 
           toast.update(toastId, {
@@ -284,23 +287,19 @@ const useCourseTable = ({
       }
     }
 
-    console.log(videosList);
+    console.log("Uploaded videos map:", uploadedVideosMap);
 
     if (imagesPath || currentImageFormData) {
-      const courseModules = modules.map((mod, idx) => {
-        const moduleLessons = lessons[idx] || [];
+      const courseModules = modules.map((mod, moduleIdx) => {
+        const moduleLessons = lessons[moduleIdx] || [];
 
         const formattedLessons = moduleLessons.map((lesson, lessonIdx) => {
-          const videoIndex = videosOrder.findIndex(
-            (order) => order.moduleIdx === idx && order.lessonIdx === lessonIdx
-          );
+          const videoKey = `${moduleIdx}-${lessonIdx}`;
+          const uploadedVideoUrl = uploadedVideosMap.get(videoKey);
 
           return {
             name: lesson.name,
-            video_url:
-              videoIndex !== -1 && videosList[videoIndex]
-                ? videosList[videoIndex].url
-                : lesson.video_url || "",
+            video_url: uploadedVideoUrl || lesson.video_url || "",
           };
         });
 
@@ -321,6 +320,9 @@ const useCourseTable = ({
         courseModules: validatedModules,
         instructor: currentUser?.username,
       };
+
+      console.log("Final API data:", apiData);
+
       toast
         .promise(
           editing.edit
