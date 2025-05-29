@@ -85,11 +85,17 @@ const CourseReviews = ({ loading, currentUser, reviews, courseInfo }) => {
         setSubmitting(false);
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(
+        console.log("🔍 Review creation error:", error);
+        console.log("🔍 Error response:", error.response?.data);
+        console.log("🔍 Error status:", error.response?.status);
+
+        const errorMessage =
+          error.response?.data?.message ||
           error?.message ||
-            "Có lỗi xảy ra khi thêm đánh giá!! Vui lòng thử lại sau!!"
-        );
+          "Có lỗi xảy ra khi thêm đánh giá!! Vui lòng thử lại sau!!";
+
+        toast.error(errorMessage);
+        setSubmitting(false);
       });
   };
 
@@ -379,7 +385,7 @@ const CourseReviews = ({ loading, currentUser, reviews, courseInfo }) => {
         ) : (
           <>
             <h3
-              className="md:text-xl sm:text-[18px] text-[16px] 
+              className="md:text-xl sm:text-[18px] text-[16px]
             font-semibold text-gray-700 mb-4 flex items-center"
             >
               <span className="mr-2">{reviewsList.length}</span>

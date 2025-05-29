@@ -10,7 +10,7 @@ const initialState = {
 export const fetchNotificationsAPI = createAsyncThunk(
   "notifications/fetchNotificationsAPI",
   async (searchPath = "") => {
-    const res = await api.get(`${API_ROOT}/v1/notifications${searchPath}`);
+    const res = await api.get(`/Notification${searchPath}`);
     return res.data;
   }
 );
@@ -18,10 +18,7 @@ export const fetchNotificationsAPI = createAsyncThunk(
 export const updateNotificationAPI = createAsyncThunk(
   "notifications/updateNotificationAPI",
   async ({ notificationId, updateData }) => {
-    const res = await api.put(
-      `${API_ROOT}/v1/notifications/${notificationId}`,
-      updateData
-    );
+    const res = await api.put(`/Notification/${notificationId}`, updateData);
     return res.data;
   }
 );
@@ -29,9 +26,7 @@ export const updateNotificationAPI = createAsyncThunk(
 export const deleteNotificationAPI = createAsyncThunk(
   "notifications/deleteNotificationAPI",
   async (notificationId) => {
-    const res = await api.delete(
-      `${API_ROOT}/v1/notifications/${notificationId}`
-    );
+    const res = await api.delete(`/Notification/${notificationId}`);
     return res.data;
   }
 );

@@ -41,10 +41,15 @@ const Notifications = () => {
       }
     };
 
-    socketIoInstance.on("BE_SEND_NOTIFICATION", onReceiveNewNotification);
+    // Temporarily disable Socket.IO for CORS testing
+    if (socketIoInstance) {
+      socketIoInstance.on("BE_SEND_NOTIFICATION", onReceiveNewNotification);
+    }
 
     return () => {
-      socketIoInstance.off("BE_SEND_NOTIFICATION", onReceiveNewNotification);
+      if (socketIoInstance) {
+        socketIoInstance.off("BE_SEND_NOTIFICATION", onReceiveNewNotification);
+      }
     };
   }, [dispatch]);
 
@@ -71,7 +76,7 @@ const Notifications = () => {
 
       {openNotification && (
         <div
-          className="absolute max-[900px]:left-0 right-0 mt-2 w-80 max-h-96 overflow-auto 
+          className="absolute max-[900px]:left-0 right-0 mt-2 w-80 max-h-96 overflow-auto
         overflow-x-hidden rounded-md bg-white shadow-lg border border-slate-300 z-50"
         >
           <div className="p-4">

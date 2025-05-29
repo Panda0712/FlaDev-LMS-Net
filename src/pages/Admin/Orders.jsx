@@ -3,7 +3,7 @@ import DeleteConfirmationModal from "~/components/DeleteConfirmationModal/Delete
 import Loading from "~/components/Loading/Loading";
 import useOrderTable from "~/hooks/useOrderTable";
 import { formatVND } from "~/utils/formatters";
-import { deleteOrder, fetchOrders } from "../../apis/endpoints";
+import { deleteOrder, fetchOrdersAdmin } from "../../apis/endpoints";
 
 const AdminOrders = () => {
   const {
@@ -18,7 +18,7 @@ const AdminOrders = () => {
     handleDeleteOrder,
     handleReset,
   } = useOrderTable({
-    fetchDataFn: fetchOrders,
+    fetchDataFn: fetchOrdersAdmin,
     deleteDataFn: deleteOrder,
   });
 
@@ -79,7 +79,7 @@ const AdminOrders = () => {
               <td className={`${tHeadStyle}`}>
                 <img
                   src={order?.courseThumbnail}
-                  className="object-cover md:w-[200px] md:h-[150px] sm:w-[150px] sm:h-[100px] 
+                  className="object-cover md:w-[200px] md:h-[150px] sm:w-[150px] sm:h-[100px]
                   w-[120px] h-[80px] mx-auto rounded-sm"
                   alt=""
                 />

@@ -17,7 +17,8 @@ export const ACCOUNT_ROLES = {
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_ITEMS_PER_PAGE = 8;
 
-let apiRoot = "https://file-payment-lms-backend.onrender.com";
+let apiRoot =
+  "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net";
 // if (process.env.BUILD_MODE === "dev") {
 //   apiRoot = "http://localhost:8017";
 // }

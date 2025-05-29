@@ -4,9 +4,7 @@ import axios from "axios";
 // "http://127.0.0.1:8000/api"
 // "http://localhost:5174/api"
 
-const API_BASE_URL =
-  import.meta.env.REACT_APP_API_BASE_URL ||
-  "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net/api";
+const API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL || "/api"; // Use Vite proxy in development
 
 const api = axios.create({
   baseURL: API_BASE_URL,

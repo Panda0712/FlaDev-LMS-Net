@@ -15,7 +15,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { fetchOrders } from "~/apis/endpoints";
+import { fetchOrdersAdmin } from "~/apis/endpoints";
 import Card from "~/components/CardDashboard/CardDashboard";
 import { formatVND } from "~/utils/formatters";
 
@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetchOrders()
+    fetchOrdersAdmin()
       .then((res) => {
         setOrders(res || []);
       })
