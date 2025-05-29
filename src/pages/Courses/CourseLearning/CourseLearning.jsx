@@ -7,6 +7,7 @@ import {
   fetchReviews,
   initCourseProgress,
   updateLessonProgress,
+  createCompletedOrderForTest,
 } from "~/apis/endpoints";
 import Loading from "~/components/Loading/Loading";
 import useCourseLearning from "~/hooks/useCourseLearning";
@@ -21,6 +22,29 @@ import CourseVideo from "~/pages/Courses/CourseLearning/CourseVideo/CourseVideo"
 const CourseLearning = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
+
+  // Test function để tạo order completed
+  const handleCreateTestOrder = async () => {
+    try {
+      const orderData = {
+        courseId: parseInt(courseId),
+        userEmail: currentUser?.email || "test@example.com",
+        userName: currentUser?.name || "Test User",
+        courseName: courseInfo?.courseName || "Test Course",
+        courseThumbnail: courseInfo?.thumbnail || courseInfo?.courseThumbnail,
+        instructor: courseInfo?.instructor || "Test Instructor",
+        totalPrice: courseInfo?.price || 0,
+        paymentMethod: "TEST",
+      };
+
+      const result = await createCompletedOrderForTest(orderData);
+      console.log("✅ Test order created:", result);
+      alert("Test order created successfully! Please refresh the page.");
+    } catch (error) {
+      console.error("❌ Failed to create test order:", error);
+      alert("Failed to create test order: " + error.message);
+    }
+  };
 
   const contentRef = useRef(null);
   const instructorRef = useRef(null);
@@ -110,6 +134,21 @@ const CourseLearning = () => {
                 </span>
               </div>
             </div>
+
+            {/* Test Button - Chỉ hiển thị khi có lỗi progress */}
+            {!progressInfo && (
+              <div className="mb-4">
+                <button
+                  onClick={handleCreateTestOrder}
+                  className="w-full bg-red-500 hover:bg-red-600 text-white text-sm py-2 px-4 rounded transition-colors"
+                >
+                  🧪 Tạo Order Test (Chỉ dành cho testing)
+                </button>
+                <p className="text-xs text-gray-500 mt-1">
+                  Nếu bạn chưa mua khóa học, click để tạo order test
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Course Progress - Scrollable */}
