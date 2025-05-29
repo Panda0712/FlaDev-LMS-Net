@@ -339,7 +339,9 @@ const AdminVouchers = () => {
               <td className={`${tHeadStyle}`}>{voucher?.usageLimit}</td>
               <td className={`${tHeadStyle}`}>{voucher?.usedCount}</td>
               <td className={`${tHeadStyle}`}>{voucher?.minOrderValue}</td>
-              <td className={`${tHeadStyle}`}>{voucher?.expiredAt}</td>
+              <td className={`${tHeadStyle}`}>
+                {new Date(voucher?.expiredAt).toLocaleDateString()}
+              </td>
             </>
           )}
           openOptions={openOptions}
