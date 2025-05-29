@@ -75,7 +75,8 @@ const CourseHeading = ({ reviews, courseInfo }) => {
     const foundVoucher = voucherList?.find(
       (voucher) =>
         voucher.code === voucherCode &&
-        voucher.courseIds.includes(courseInfo?.id) &&
+        (voucher.courseIds.includes(courseInfo?.id) ||
+          voucher.courseIds === courseInfo?.id) &&
         new Date() < new Date(voucher.expiredAt)
     );
 

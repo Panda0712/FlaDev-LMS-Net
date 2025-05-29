@@ -51,9 +51,10 @@ export class PaymentService {
         orderId: orderId,
         amount: amount,
         description: `Thanh toán khóa học ${courseName}`,
-        returnUrl: `${window.location.origin}/order-complete?orderId=${orderId}`,
+        returnUrl: `${window.location.origin}/order/complete?orderId=${orderId}`,
         notifyUrl: `${
-          import.meta.env.VITE_API_BASE_URL || "http://localhost:5267"
+          import.meta.env.REACT_APP_API_BASE_URL ||
+          "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net"
         }/api/Payment/${paymentMethod}/callback`,
         paymentMethod: paymentMethod.toLowerCase(),
       };

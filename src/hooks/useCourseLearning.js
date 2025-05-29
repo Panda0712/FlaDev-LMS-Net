@@ -74,9 +74,16 @@ const useCourseLearning = ({
       courseModules: updatedModules,
     }));
 
+    // Tìm lesson ID thực tế từ lesson name
+    const currentLesson = findCurrentLesson();
+    if (!currentLesson) {
+      console.error("Current lesson not found");
+      return;
+    }
+
     updateProgressFn({
       courseId,
-      lessonId: lessonName,
+      lessonId: currentLesson.id, // Sử dụng lesson ID thay vì lesson name
       userId: currentUser?.id,
     })
       .then((res) => {
@@ -110,9 +117,19 @@ const useCourseLearning = ({
   };
 
   const initialProgress = () => {
-    if (!currentUser || !courseId) return;
+    if (!currentUser || !courseId || !courseInfo) return;
 
-    initProgressFn({ courseId, userId: currentUser?.id })
+    // Tính tổng số lessons từ courseInfo
+    const totalLessons =
+      courseInfo.courseModules?.reduce((total, module) => {
+        return total + (module.lessons?.length || 0);
+      }, 0) || 0;
+
+    initProgressFn({
+      courseId,
+      userId: currentUser?.id,
+      totalLessons: totalLessons,
+    })
       .then((res) => {
         setProgressInfo(res);
         setProgressPercent(res?.percentComplete || 0);

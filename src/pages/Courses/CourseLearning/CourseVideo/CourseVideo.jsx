@@ -27,9 +27,9 @@ const CourseVideo = ({
   }, [videoUrl]);
 
   return (
-    <div className="relative rounded-[16px] overflow-hidden">
+    <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
       {videoUrl ? (
-        <div className="relative player-wrapper w-full h-full aspect-video">
+        <div className="relative player-wrapper w-full h-full">
           <ReactPlayer
             ref={playerRef}
             url={videoUrl}
@@ -49,25 +49,21 @@ const CourseVideo = ({
               },
             }}
             style={{
-              borderRadius: "16px",
+              borderRadius: "8px",
               objectFit: "cover",
             }}
           />
         </div>
       ) : (
         <>
-          <img
-            src={thumbnail}
-            className="w-full h-full object-cover rounded-[16px]"
-            alt=""
-          />
+          <img src={thumbnail} className="w-full h-full object-cover" alt="" />
           <div
             onClick={handlePlayPause}
-            className="absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%] 
-              w-[100px] h-[100px] shadow-sm cursor-pointer transition hover:opacity-80 bg-white 
+            className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
+              w-20 h-20 shadow-lg cursor-pointer transition hover:scale-110 bg-white
               rounded-full flex items-center justify-center"
           >
-            <Play size={44} className="fill-black" />
+            <Play size={32} className="fill-black ml-1" />
           </div>
         </>
       )}

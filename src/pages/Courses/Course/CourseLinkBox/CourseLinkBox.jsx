@@ -1,20 +1,28 @@
+import { useState } from "react";
 import { linkBoxInfo } from "~/pages/Courses/Course/CourseLinkBox/constants";
 
 const CourseLinkBox = ({ onScrollToSection }) => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabClick = (idx) => {
+    setActiveTab(idx);
+    onScrollToSection && onScrollToSection(idx);
+  };
+
   return (
-    <div className="flex max-sm:flex-col items-center gap-[24px] pt-[40px] pb-[24px] border-b border-slate-300 max-w-3xl">
+    <div className="flex items-center border-b border-gray-200 overflow-x-auto">
       {linkBoxInfo.map((item, idx) => (
-        <div
+        <button
           key={item.name}
-          className="flex items-center justify-center max-sm:w-full 
-          w-[148px] h-[57px] rounded-[8px] 
-          bg-[#eff6ff] cursor-pointer transition hover:opacity-80"
-          onClick={() => onScrollToSection && onScrollToSection(idx)}
+          className={`px-4 lg:px-6 py-3 lg:py-4 text-sm font-medium transition-colors relative whitespace-nowrap ${
+            activeTab === idx
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-gray-800"
+          }`}
+          onClick={() => handleTabClick(idx)}
         >
-          <span className="text-[14px] text-[#555555] font-medium">
-            {item.name}
-          </span>
-        </div>
+          {item.name}
+        </button>
       ))}
     </div>
   );

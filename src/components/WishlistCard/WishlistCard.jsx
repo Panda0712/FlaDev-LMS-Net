@@ -1,16 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteWishlist } from "~/apis/endpoints";
+import { removeFromWishlistByCourse } from "~/apis/endpoints";
 import Button from "~/components/Button/Button";
 import Star from "~/components/Star/Star";
 
 const WishlistCard = ({ wishlistItem, handleAfterDelete }) => {
   const navigate = useNavigate();
 
-  const handleDeleteWishlist = (id) => {
+  const handleDeleteWishlist = (courseId) => {
     toast
-      .promise(deleteWishlist(id), {
+      .promise(removeFromWishlistByCourse(courseId), {
         pending: "Đang xóa khóa học khỏi wishlist...",
       })
       .then(() => {
@@ -63,7 +63,7 @@ const WishlistCard = ({ wishlistItem, handleAfterDelete }) => {
               style="py-1 px-0!"
             />
             <Button
-              onClick={() => handleDeleteWishlist(wishlistItem?.id)}
+              onClick={() => handleDeleteWishlist(wishlistItem?.courseId)}
               title="Xóa"
               type="warning"
               style="py-1"

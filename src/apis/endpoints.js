@@ -229,6 +229,11 @@ export const deleteWishlist = async (id) => {
   return res.data;
 };
 
+export const removeFromWishlistByCourse = async (courseId) => {
+  const res = await api.delete(`/Wishlist/course/${courseId}`);
+  return res.data;
+};
+
 // Profile/User
 export const fetchUserProfile = async () => {
   const res = await api.get("/User");
@@ -298,7 +303,11 @@ export const uploadCourseVideoAPI = async (data) => {
 
 // Progress
 export const fetchCourseProgress = async (courseId) => {
-  const res = await api.get(`/Progress/${courseId}`, { params: { courseId } });
+  console.log("🔍 Fetching course progress for courseId:", courseId);
+  const token = localStorage.getItem("token");
+  console.log("🔍 Token exists:", !!token);
+
+  const res = await api.get(`/Progress/${courseId}`);
   return res.data;
 };
 
@@ -308,12 +317,32 @@ export const fetchAllProgress = async () => {
 };
 
 export const updateLessonProgress = async (data) => {
-  const res = await api.post("/Progress/update-lesson", data);
+  const { courseId, lessonId, userId, ...restData } = data;
+  const res = await api.post(`/Progress/update-lesson?courseId=${courseId}`, {
+    lessonId: lessonId,
+    isCompleted: true,
+    ...restData,
+  });
   return res.data;
 };
 
 export const initCourseProgress = async (data) => {
-  const res = await api.post("/Progress/init", data);
+  const { courseId, totalLessons } = data;
+  console.log("🔍 Initializing course progress:", { courseId, totalLessons });
+  const token = localStorage.getItem("token");
+  console.log("🔍 Token exists:", !!token);
+
+  const res = await api.post("/Progress/init", {
+    courseId: courseId,
+    totalLessons: totalLessons || 0,
+  });
+  return res.data;
+};
+
+// TEST API - Tạo order completed cho testing
+export const createCompletedOrderForTest = async (courseData) => {
+  console.log("🔍 Creating completed order for test:", courseData);
+  const res = await api.post("/Order/test/create-completed", courseData);
   return res.data;
 };
 
@@ -341,10 +370,13 @@ export const momoPaymentAPI = async (data) => {
     orderId: data.orderId || data.id,
     amount: data.totalPrice || data.amount,
     description: `Thanh toán khóa học ${data.courseName || "LMS"}`,
-    returnUrl: `${window.location.origin}/order-complete?orderId=${
+    returnUrl: `${window.location.origin}/order/complete?orderId=${
       data.orderId || data.id
     }`,
-    notifyUrl: `${import.meta.env.VITE_API_BASE_URL}/api/Payment/momo/callback`,
+    notifyUrl: `${
+      import.meta.env.REACT_APP_API_BASE_URL ||
+      "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net"
+    }/api/Payment/momo/callback`,
     paymentMethod: "momo",
   };
 
@@ -363,11 +395,12 @@ export const zaloPaymentAPI = async (data) => {
     orderId: data.orderId || data.id,
     amount: data.totalPrice || data.amount,
     description: `Thanh toán khóa học ${data.courseName || "LMS"}`,
-    returnUrl: `${window.location.origin}/order-complete?orderId=${
+    returnUrl: `${window.location.origin}/order/complete?orderId=${
       data.orderId || data.id
     }`,
     notifyUrl: `${
-      import.meta.env.VITE_API_BASE_URL
+      import.meta.env.REACT_APP_API_BASE_URL ||
+      "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net"
     }/api/Payment/zalopay/callback`,
     paymentMethod: "zalopay",
   };
