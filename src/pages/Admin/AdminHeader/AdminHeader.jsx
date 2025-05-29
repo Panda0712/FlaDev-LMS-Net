@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "~/apis/endpoints";
@@ -11,8 +11,6 @@ const AdminHeader = () => {
   const [openAdminProfile, setOpenAdminProfile] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const user = useSelector((state) => state.auth.user);
-  console.log(user);
   const dispatch = useDispatch();
 
   const handleToggleOpenAdminProfile = () =>

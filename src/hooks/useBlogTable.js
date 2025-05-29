@@ -11,7 +11,7 @@ const useBlogTable = ({
   createDataFn,
   updateDataFn,
   deleteDataFn,
-  imageKey = "blog-covers",
+  // imageKey = "blog-covers",
   currentImageFormData,
   resetFn,
 }) => {
@@ -58,7 +58,7 @@ const useBlogTable = ({
       reader.readAsDataURL(file);
     }
     const formData = new FormData();
-    formData.append(imageKey, event.target?.files[0]);
+    formData.append("file", event.target?.files[0]);
     reqDataRef.current = formData;
   };
 

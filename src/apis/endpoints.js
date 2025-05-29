@@ -273,22 +273,26 @@ export const uploadMedia = async (data) => {
 };
 
 export const uploadUserImage = async (data) => {
-  const res = await api.post("Media/users/uploads", data);
+  const res = await api.post("/Media/users/uploads", data);
   return res.data;
 };
 
 export const uploadBlogImageAPI = async (data) => {
-  const res = await api.post("Media/blogs/uploads", data);
+  const res = await api.post("/Media/blogs/uploads", data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   return res.data;
 };
 
 export const uploadCourseImageAPI = async (data) => {
-  const res = await api.post("Media/courses/uploads", data);
+  const res = await api.post("/Media/courses/uploads", data);
   return res.data;
 };
 
 export const uploadCourseVideoAPI = async (data) => {
-  const res = await api.post("Media/courses/uploads-videos", data);
+  const res = await api.post("/Media/courses/uploads-videos", data);
   return res.data;
 };
 

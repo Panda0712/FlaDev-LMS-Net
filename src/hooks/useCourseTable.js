@@ -11,8 +11,8 @@ const useCourseTable = ({
   createDataFn,
   updateDataFn,
   deleteDataFn,
-  imageKey = "course-thumbnails",
-  videoKey = "course-videos",
+  // imageKey = "course-thumbnails",
+  // videoKey = "course-videos",
   currentImageFormData,
   resetFn,
 }) => {
@@ -56,7 +56,7 @@ const useCourseTable = ({
       reader.readAsDataURL(file);
     }
     const formData = new FormData();
-    formData.append(imageKey, event.target?.files[0]);
+    formData.append("file", event.target?.files[0]);
     reqDataRef.current = formData;
   };
 
@@ -114,7 +114,7 @@ const useCourseTable = ({
       setVideosList((currentVideosList) => {
         const formData = new FormData();
         currentVideosList.forEach((videoFile) => {
-          formData.append(videoKey, videoFile);
+          formData.append("file", videoFile);
         });
         videoDataRef.current = formData;
         return currentVideosList;
@@ -236,12 +236,55 @@ const useCourseTable = ({
       });
 
     let videosList = [];
-    if (formVideoData)
-      videosList = await toast.promise(uploadCourseVideoAPI(formVideoData), {
-        pending: "Đang tải video lên...",
-        success: "Tải video thành công!!!",
-        error: "Tải video thất bại!",
-      });
+    if (formVideoData) {
+      // videosList = await toast.promise(uploadCourseVideoAPI(formVideoData), {
+      //   pending: "Đang tải video lên...",
+      //   success: "Tải video thành công!!!",
+      //   error: "Tải video thất bại!",
+      // });
+      const videoFiles = formVideoData.getAll("file");
+
+      if (videoFiles.length > 0) {
+        const toastId = toast.loading(
+          `Đang tải ${videoFiles.length} video lên...`
+        );
+
+        try {
+          for (let i = 0; i < videoFiles.length; i++) {
+            toast.update(toastId, {
+              render: `Đang tải video ${i + 1}/${videoFiles.length}...`,
+              type: "default",
+              isLoading: true,
+            });
+
+            const singleVideoFormData = new FormData();
+            singleVideoFormData.append("file", videoFiles[i]);
+
+            const uploadResult = await uploadCourseVideoAPI(
+              singleVideoFormData
+            );
+            videosList.push(uploadResult);
+          }
+
+          toast.update(toastId, {
+            render: "Tải video thành công!!!",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        } catch (error) {
+          toast.update(toastId, {
+            render: "Tải video thất bại!",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+          throw error;
+        }
+      }
+    }
+
+    console.log(videosList);
 
     if (imagesPath || currentImageFormData) {
       const courseModules = modules.map((mod, idx) => {
@@ -296,6 +339,7 @@ const useCourseTable = ({
                 ? "Chỉnh sửa thành công"
                 : "Tạo khóa học mới thành công!"
             );
+            console.log("res", res);
             handleAfterDeletedData();
           }
           handleReset();

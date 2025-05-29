@@ -10,8 +10,8 @@ export const ORDER_STATUS = {
 };
 
 export const ACCOUNT_ROLES = {
-  ADMIN: "ADMIN",
-  CLIENT: "CLIENT",
+  ADMIN: "admin",
+  CLIENT: "student",
 };
 
 export const DEFAULT_PAGE = 1;

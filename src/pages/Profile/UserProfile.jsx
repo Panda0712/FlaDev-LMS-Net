@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   fetchUserProfile,
@@ -10,6 +10,7 @@ import {
 import Button from "~/components/Button/Button";
 import Input from "~/components/Input/Input";
 import Loading from "~/components/Loading/Loading";
+import { setUser as setUserRedux } from "~/redux/authSlice";
 import { singleFileValidator } from "~/utils/validators";
 
 const UserProfile = () => {
@@ -19,6 +20,7 @@ const UserProfile = () => {
 
   const { register, handleSubmit, reset, getValues } = useForm();
 
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
   const imageRef = useRef(null);
 
@@ -37,7 +39,7 @@ const UserProfile = () => {
     }
 
     let reqData = new FormData();
-    reqData.append("avatar", event.target?.files[0]);
+    reqData.append("file", event.target?.files[0]);
     imageRef.current = reqData;
   };
 
@@ -74,12 +76,16 @@ const UserProfile = () => {
         })
         .then((res) => {
           if (!res.error) {
+            const actionData = {
+              user: res,
+              token: localStorage.getItem("token"),
+            };
+            dispatch(setUserRedux(actionData));
             toast.success("Cập nhật hình ảnh thành công!!!");
             imageRef.current = null;
           }
         })
         .catch((error) => {
-          console.log(error);
           toast.error(error?.message);
         });
     }
@@ -127,6 +133,11 @@ const UserProfile = () => {
       })
       .then((res) => {
         if (!res.error) {
+          const actionData = {
+            user: res,
+            token: localStorage.getItem("token"),
+          };
+          dispatch(setUserRedux(actionData));
           toast.success("Cập nhật thông tin thành công!!!");
           imageRef.current = null;
         }
