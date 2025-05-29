@@ -83,6 +83,7 @@ const UserProfile = () => {
             dispatch(setUserRedux(actionData));
             toast.success("Cập nhật hình ảnh thành công!!!");
             imageRef.current = null;
+            handleAfterUploadedData();
           }
         })
         .catch((error) => {
@@ -175,6 +176,19 @@ const UserProfile = () => {
       setImage(null);
     }
   }, [user, reset]);
+
+  const handleAfterUploadedData = () => {
+    setLoading(true);
+    getCurrentAuth()
+      .then((res) => {
+        setUser(res || null);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error?.message);
+      })
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
     setLoading(true);

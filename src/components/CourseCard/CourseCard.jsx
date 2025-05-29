@@ -72,12 +72,12 @@ const CourseCard = ({
             : `/courses/${course?.id}`
         )
       }
-      className="rounded-[20px] cursor-pointer transform transition 
+      className="relative rounded-[20px] cursor-pointer transform transition 
       hover:translate-y-[-20px] hover:shadow-xl hover:border-0"
     >
       <img
         src={course?.thumbnail}
-        className="w-full lg:min-h-[250px] md:min-h-[200px] max-md:max-h-[200px]
+        className="w-full lg:min-h-[250px] md:min-h-[200px] md:max-h-[200px] max-md:max-h-[200px]
          object-cover rounded-tl-[20px] rounded-tr-[20px]"
         alt=""
       />
@@ -88,7 +88,7 @@ const CourseCard = ({
         </p>
         <h4
           className="font-semibold lg:text-[24px] md:text-[20px] 
-        sm:text-[18px] text-[16px] line-clamp-2"
+        sm:text-[18px] text-[16px] line-clamp-2 min-h-[80px]"
         >
           {course?.name}
         </h4>

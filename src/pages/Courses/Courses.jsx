@@ -1,7 +1,7 @@
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { fetchCourses } from "~/apis/endpoints";
+import { fetchCourses, fetchReviews } from "~/apis/endpoints";
 import CourseCard from "~/components/CourseCard/CourseCard";
 import NavigationText from "~/components/NavigationText/NavigationText";
 import CourseFilter from "~/pages/Courses/CourseFilter/CourseFilter";
@@ -118,11 +118,10 @@ const Courses = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetchCourses()
-      .then((coursesRes) => {
+    Promise.all([fetchCourses(), fetchReviews()])
+      .then(([coursesRes, reviewsRes]) => {
         setCourses(coursesRes || []);
-        // Set empty reviews for now - reviews will be fetched per course when needed
-        setReviews([]);
+        setReviews(reviewsRes || []);
       })
       .catch((error) => {
         console.log(error);
