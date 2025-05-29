@@ -10,7 +10,7 @@ const API_BASE_URL =
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
+  withCredentials: false, // Temporarily disable for CORS fix
 });
 
 api.interceptors.request.use(
