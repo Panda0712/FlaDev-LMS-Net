@@ -6,7 +6,8 @@ import axios from "axios";
 
 const API_BASE_URL =
   import.meta.env.REACT_APP_API_BASE_URL ||
-  "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net/api";
+  // "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net/api" ||
+  "http://localhost:5267/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -17,32 +18,41 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
 
-    // Danh sách các endpoint KHÔNG cần xác thực (public)
-    const publicEndpoints = [
+    // Danh sách các endpoint KHÔNG cần xác thực (public) - chỉ cho GET requests
+    const publicGetEndpoints = [
       "/Review",
       "/Review/course/",
       "/Course",
       "/Course/",
       "/Blog",
       "/Blog/",
+    ];
+
+    // Danh sách các endpoint hoàn toàn public (tất cả methods)
+    const fullyPublicEndpoints = [
       "/Auth/login",
       "/Auth/register",
       "/Auth/forgot-password",
       "/Auth/reset-password",
     ];
 
-    // Kiểm tra xem request hiện tại có phải là endpoint public không
-    const isPublicEndpoint = publicEndpoints.some((endpoint) =>
+    const isGetRequest = config.method?.toLowerCase() === "get";
+
+    // Kiểm tra xem request có phải là endpoint hoàn toàn public không
+    const isFullyPublicEndpoint = fullyPublicEndpoints.some((endpoint) =>
       config.url?.startsWith(endpoint)
     );
 
-    // Trường hợp đặc biệt: Course endpoints - chỉ GET requests là public
-    const isCourseEndpoint = config.url?.startsWith("/Course");
-    const isGetRequest = config.method?.toLowerCase() === "get";
+    // Kiểm tra xem request có phải là GET request cho endpoint public không
+    const isPublicGetEndpoint =
+      isGetRequest &&
+      publicGetEndpoints.some((endpoint) => config.url?.startsWith(endpoint));
 
-    // Chỉ thêm token cho các endpoint không phải public
-    // Ngoại lệ: Course endpoints cần token cho các request không phải GET
-    if (token && (!isPublicEndpoint || (isCourseEndpoint && !isGetRequest))) {
+    // Chỉ thêm token nếu:
+    // 1. Có token
+    // 2. Không phải endpoint hoàn toàn public
+    // 3. Không phải GET request cho endpoint public
+    if (token && !isFullyPublicEndpoint && !isPublicGetEndpoint) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 

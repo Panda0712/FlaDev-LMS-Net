@@ -135,8 +135,8 @@ const CourseLearning = () => {
               </div>
             </div>
 
-            {/* Test Button - Chỉ hiển thị khi có lỗi progress */}
-            {!progressInfo && (
+            {/* Test Button - Ẩn đi để không hiển thị cho user */}
+            {false && !progressInfo && (
               <div className="mb-4">
                 <button
                   onClick={handleCreateTestOrder}
