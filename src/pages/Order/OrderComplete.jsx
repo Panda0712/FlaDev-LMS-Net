@@ -99,7 +99,10 @@ const OrderComplete = () => {
                 localStorage.getItem("last-payment-method") || "momo";
 
               const completeResponse = await fetch(
-                `http://localhost:5267/api/Payment/test/complete/${orderId}`,
+                `${
+                  import.meta.env.REACT_APP_API_BASE_URL ||
+                  "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net"
+                }/api/Payment/test/complete/${orderId}`,
                 {
                   method: "POST",
                   headers: {

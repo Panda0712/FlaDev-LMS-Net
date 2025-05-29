@@ -143,6 +143,12 @@ const useCourseLearning = ({
   const fetchProgress = () => {
     if (!currentUser || !courseId) return;
 
+    // Temporarily disable Progress API calls until backend is fixed
+    console.log("🔍 Progress API temporarily disabled");
+    setProgressInfo({ percentComplete: 0, completedLessons: [] });
+    setProgressPercent(0);
+    return;
+
     fetchProgressFn(courseId, currentUser?.id)
       .then((res) => {
         setProgressInfo(res);
