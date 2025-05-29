@@ -373,7 +373,10 @@ export const momoPaymentAPI = async (data) => {
     returnUrl: `${window.location.origin}/order/complete?orderId=${
       data.orderId || data.id
     }`,
-    notifyUrl: `${import.meta.env.VITE_API_BASE_URL}/api/Payment/momo/callback`,
+    notifyUrl: `${
+      import.meta.env.REACT_APP_API_BASE_URL ||
+      "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net"
+    }/api/Payment/momo/callback`,
     paymentMethod: "momo",
   };
 
@@ -396,7 +399,8 @@ export const zaloPaymentAPI = async (data) => {
       data.orderId || data.id
     }`,
     notifyUrl: `${
-      import.meta.env.VITE_API_BASE_URL
+      import.meta.env.REACT_APP_API_BASE_URL ||
+      "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net"
     }/api/Payment/zalopay/callback`,
     paymentMethod: "zalopay",
   };
