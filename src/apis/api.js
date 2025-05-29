@@ -6,8 +6,7 @@ import axios from "axios";
 
 const API_BASE_URL =
   import.meta.env.REACT_APP_API_BASE_URL ||
-  // "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net/api";
-  "http://localhost:5267/api";
+  "https://lms-cnnet-gjeydkc6e8h8esbx.southeastasia-01.azurewebsites.net/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
