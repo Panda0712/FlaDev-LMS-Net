@@ -317,16 +317,69 @@ export const initCourseProgress = async (data) => {
   return res.data;
 };
 
-// Momo Payment
-export const momoPaymentAPI = async (data) => {
-  const res = await api.post(`${API_ROOT}/v1/payment/momo`, data);
+// Payment APIs - Updated for .NET Backend
+export const createPaymentAPI = async (paymentData) => {
+  console.log("🔍 Sending payment request to backend:", paymentData);
+  console.log("🔍 Request URL:", "/Payment/create");
+
+  const res = await api.post("/Payment/create", paymentData);
+
+  console.log("🔍 Backend response:", res.data);
+  console.log("🔍 Response status:", res.status);
+
   return res.data;
 };
 
-// Zalopay Payment
-export const zaloPaymentAPI = async (data) => {
-  const res = await api.post(`${API_ROOT}/v1/payment/zalopay`, data);
+export const getPaymentStatusAPI = async (orderId) => {
+  const res = await api.get(`/Payment/status/${orderId}`);
   return res.data;
+};
+
+// Legacy functions for backward compatibility
+export const momoPaymentAPI = async (data) => {
+  const paymentData = {
+    orderId: data.orderId || data.id,
+    amount: data.totalPrice || data.amount,
+    description: `Thanh toán khóa học ${data.courseName || "LMS"}`,
+    returnUrl: `${window.location.origin}/order-complete?orderId=${
+      data.orderId || data.id
+    }`,
+    notifyUrl: `${import.meta.env.VITE_API_BASE_URL}/api/Payment/momo/callback`,
+    paymentMethod: "momo",
+  };
+
+  const res = await api.post("/Payment/create", paymentData);
+  return {
+    data: {
+      payUrl: res.data.paymentUrl,
+      success: res.data.success,
+      message: res.data.message,
+    },
+  };
+};
+
+export const zaloPaymentAPI = async (data) => {
+  const paymentData = {
+    orderId: data.orderId || data.id,
+    amount: data.totalPrice || data.amount,
+    description: `Thanh toán khóa học ${data.courseName || "LMS"}`,
+    returnUrl: `${window.location.origin}/order-complete?orderId=${
+      data.orderId || data.id
+    }`,
+    notifyUrl: `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/Payment/zalopay/callback`,
+    paymentMethod: "zalopay",
+  };
+
+  const res = await api.post("/Payment/create", paymentData);
+  return {
+    data: {
+      order_url: res.data.paymentUrl,
+      success: res.data.success,
+      message: res.data.message,
+    },
+  };
 };
 
 // Create new notification

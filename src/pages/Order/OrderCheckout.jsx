@@ -2,12 +2,13 @@ import { isArray } from "lodash";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { momoPaymentAPI, zaloPaymentAPI } from "~/apis/endpoints";
 import Button from "~/components/Button/Button";
 import CheckoutDetails from "~/pages/Order/CheckoutDetails/CheckoutDetails";
 import CheckoutNote from "~/pages/Order/CheckoutNote/CheckoutNote";
 import CheckoutPrice from "~/pages/Order/CheckoutPrice/CheckoutPrice";
 import CheckoutRadio from "~/pages/Order/CheckoutRadio/CheckoutRadio";
+import PaymentService from "~/services/paymentService";
+import { createOrder } from "~/apis/endpoints";
 import { PAYMENT_METHODS } from "~/utils/constants";
 
 const OrderCheckout = () => {
@@ -15,6 +16,9 @@ const OrderCheckout = () => {
 
   const orderData = JSON.parse(localStorage.getItem("order-data"));
   const navigate = useNavigate();
+
+  // Debug orderData structure
+  console.log("OrderData from localStorage:", orderData);
 
   const handleChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -26,33 +30,61 @@ const OrderCheckout = () => {
       return;
     }
 
-    const paymentData = isArray(orderData)
-      ? orderData.map((order) => ({ ...order, paymentMethod }))
-      : { ...orderData, paymentMethod };
-    if (paymentMethod === PAYMENT_METHODS.MOMO) {
-      await handleMomoPayment(paymentData);
-    } else {
-      await handleZaloPayment(paymentData);
+    try {
+      const courseData = isArray(orderData)
+        ? orderData[0] // Take first order if array
+        : orderData;
+
+      console.log("Course data for order creation:", courseData);
+
+      // Step 1: Create order first
+      const orderCreateData = {
+        courseId: courseData.courseId,
+        userEmail: courseData.userEmail,
+        userName: courseData.userName,
+        courseName: courseData.courseName,
+        courseThumbnail: courseData.courseThumbnail,
+        instructor: courseData.instructor,
+        totalPrice: courseData.totalPrice,
+        paymentMethod: paymentMethod,
+      };
+
+      console.log("Creating order with data:", orderCreateData);
+      const createdOrder = await createOrder(orderCreateData);
+      console.log("Order created successfully:", createdOrder);
+
+      // Step 2: Create payment for the created order
+      const paymentData = {
+        ...courseData,
+        id: createdOrder.id, // Use the real order ID
+        orderId: createdOrder.id, // Explicitly set orderId
+      };
+
+      console.log("Creating payment with order data:", paymentData);
+
+      // Store payment method for later use
+      localStorage.setItem("last-payment-method", paymentMethod);
+
+      let result;
+      if (paymentMethod === PAYMENT_METHODS.MOMO) {
+        result = await PaymentService.createMoMoPayment(paymentData);
+      } else {
+        result = await PaymentService.createZaloPayPayment(paymentData);
+      }
+
+      if (result.success) {
+        PaymentService.redirectToPayment(result.paymentUrl);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại!");
+      }
     }
-  };
-
-  const handleMomoPayment = async (bookingInfoData) => {
-    const data = await momoPaymentAPI(bookingInfoData);
-
-    const payUrl = data.data?.[0]?.payUrl || data.data?.payUrl;
-
-    if (payUrl) {
-      window.location.href = payUrl;
-    } else toast.error("Không thể tạo đường dẫn thanh toán!!!");
-  };
-
-  const handleZaloPayment = async (bookingInfoData) => {
-    const data = await zaloPaymentAPI(bookingInfoData);
-
-    const order_url = data.data?.[0]?.order_url || data.data?.order_url;
-
-    if (order_url) window.location.href = order_url;
-    else toast.error("Không thể tạo đường dẫn thanh toán!!!");
   };
 
   useEffect(() => {
@@ -66,7 +98,7 @@ const OrderCheckout = () => {
       </h3>
 
       <div
-        className="relative flex max-md:flex-col 
+        className="relative flex max-md:flex-col
       gap-5 justify-between basis-[100%]"
       >
         <div className="flex flex-col basis-[calc(60%-10px)] max-md:mb-12">

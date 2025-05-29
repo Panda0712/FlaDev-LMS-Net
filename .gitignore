@@ -24,3 +24,31 @@ dist-ssr
 *.sw?
 *.env
 
+# .NET specific
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.pdb
+*.exe
+*.tmp
+*.temp
+.vs/
+
+# Sensitive configuration files
+appsettings.json
+appsettings.*.json
+!appsettings.Development.json.template
+!appsettings.Production.json.template
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets
+secrets.json
+user-secrets/
+
