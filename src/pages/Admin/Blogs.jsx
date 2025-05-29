@@ -56,6 +56,8 @@ const AdminBlogs = () => {
     resetFn: reset,
   });
 
+  console.log(currentBookings);
+
   useEffect(() => {
     if (editing.edit && editing.data) {
       reset({
@@ -225,8 +227,9 @@ const AdminBlogs = () => {
                 {Array.isArray(blog?.tags) ? blog.tags.join(", ") : ""}
               </td>
               <td className={tHeadStyle}>
-                {blog?.created_at
-                  ? new Date(blog.created_at).toLocaleDateString()
+                {blog?.createdAt || blog?.CreatedAt
+                  ? new Date(blog.createdAt).toLocaleDateString() ||
+                    new Date(blog.CreatedAt).toLocaleDateString()
                   : ""}
               </td>
             </>
