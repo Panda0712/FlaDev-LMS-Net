@@ -51,7 +51,7 @@ export class PaymentService {
         orderId: orderId,
         amount: amount,
         description: `Thanh toán khóa học ${courseName}`,
-        returnUrl: `${window.location.origin}/order-complete?orderId=${orderId}`,
+        returnUrl: `${window.location.origin}/order/complete?orderId=${orderId}`,
         notifyUrl: `${
           import.meta.env.VITE_API_BASE_URL || "http://localhost:5267"
         }/api/Payment/${paymentMethod}/callback`,

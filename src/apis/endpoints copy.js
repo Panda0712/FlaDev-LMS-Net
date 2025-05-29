@@ -214,6 +214,11 @@ export const deleteWishlist = async (id) => {
   return res.data;
 };
 
+export const removeFromWishlistByCourse = async (courseId) => {
+  const res = await api.delete(`/wishlist/course/${courseId}`);
+  return res.data;
+};
+
 // Profile/User
 export const fetchUserProfile = async () => {
   const res = await api.get("/users");

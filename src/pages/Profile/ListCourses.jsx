@@ -40,9 +40,7 @@ const ListCourses = () => {
     Promise.all([fetchOrders(), fetchReviews()])
       .then(([ordersRes, reviewsRes]) => {
         setOrderedCourses(
-          ordersRes?.filter(
-            (order) => String(order.userId) === currentUser?.id
-          ) || []
+          ordersRes?.filter((order) => order.userId === currentUser?.id) || []
         );
         setReviews(reviewsRes || []);
       })
